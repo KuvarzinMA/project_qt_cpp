@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1236</width>
+    <height>646</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>МикроКредит2.0</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+	background-image: url(:/img/serdechki.png);
+    
+	background-color: qlineargradient(spread:reflect, x1:0.199, y1:0.829545, x2:0.625, y2:0.408727, stop:0 rgba(233, 226, 255, 255), stop:1 rgba(241, 212, 255, 255));
+}
+
+QTabWidget::pane { /* Область под табами */
+    border: none; /* Убираем стандартную рамку */
+    background:rgb(255, 207, 253) ;
+	background-color: rgb(255, 207, 253);
+    padding: 10px; /* Небольшой отступ */
+}
+
+QTabWidget::tab-bar {
+    alignment: center; /* Выравниваем табы по центру */
+    left: 5px; /* Небольшой отступ слева, чтобы избежать прилипания к краю */
+}
+
+QTabBar::tab {
+    background:  rgb(255, 207, 253); /* Серый фон для табов */
+    border: 2px solid #C0C0C0; /* Тонкая серая рамка */
+    border-bottom-color: #C0C0C0; /* Нижняя граница совпадает с цветом фона области под табами, создает эффект &quot;парения&quot; */
+    border-top-left-radius: 10px; /* Большой радиус скругления слева сверху */
+    border-top-right-radius: 10px; /* Большой радиус скругления справа сверху */
+    min-width: 150px; /* Минимальная ширина таба */
+	min-height: 40px;
+    padding: 5px 10px; /* Отступы внутри таба */
+    margin-right: 5px; /* Расстояние между табами */
+}
+
+QTabBar::tab:selected {
+    background: #FFFFFF; /* Белый фон для выбранного таба */
+    border-bottom-color: #FFFFFF; /* Нижняя граница белая, чтобы слить с фоном области */
+    font-weight: bold; /* Жирный шрифт для выбранного таба */
+}
+
+QTabBar::tab:!selected {
+    margin-top: 3px; /* Небольшой сдвиг невыбранных табов вниз для эффекта &quot;парения&quot; выбранного таба */
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>20</y>
+      <width>1081</width>
+      <height>561</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: qlineargradient(spread:reflect, x1:0.199, y1:0.829545, x2:0.625, y2:0.408727, stop:0 rgba(233, 226, 255, 255), stop:1 rgba(241, 212, 255, 255));</string>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="clients_tab">
+     <attribute name="title">
+      <string>Клиенты</string>
+     </attribute>
+     <widget class="QTableView" name="clients_table">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>481</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px; /* Радиус скругления 10 пикселей */
+</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="add_row">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>360</y>
+        <width>191</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Добавить клиента</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="remove_row">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>360</y>
+        <width>191</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Удалить клиента</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>20</y>
+        <width>151</width>
+        <height>341</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>smile.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="client_info">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>20</y>
+        <width>321</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Информация о клиенте (Клик по таблице)</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="update_client">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>430</y>
+        <width>421</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Редактировать клиентов, можно прямо в таблице</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="help">
+      <property name="geometry">
+       <rect>
+        <x>610</x>
+        <y>430</y>
+        <width>421</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>После добавления значений в таблицу, нажимайте ENTER</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="fullname_label">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>160</y>
+        <width>321</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Фамилия Имя Отчество</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="birthday_label">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>230</y>
+        <width>321</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Дата рождения</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="clientid_label">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>90</y>
+        <width>321</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>ClientID</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="email_label">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>300</y>
+        <width>321</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Email</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="credits_tab">
+     <attribute name="title">
+      <string>Кредиты</string>
+     </attribute>
+     <widget class="QTableView" name="credits_table">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>481</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="credit_info">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>20</y>
+        <width>321</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Информация о кредите</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="add_row_credit">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>360</y>
+        <width>191</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Добавить кредит</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="remove_row_credit">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>360</y>
+        <width>191</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Удалить кредит</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="update_credits">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>430</y>
+        <width>421</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Редактировать кредиты, можно прямо в таблице</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="help_2">
+      <property name="geometry">
+       <rect>
+        <x>610</x>
+        <y>430</y>
+        <width>421</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>После добавления значений в таблицу, нажимайте ENTER</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="creditid_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>90</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>CreditID</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="clientid2_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>140</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>ClientID</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sumcredit_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>190</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Сумма кредита</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="startcredit_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>240</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Дата выдачи кредита</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="endcredit_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>290</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Дедлайн кредита</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="status_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>340</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Статус кредита</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="payments_tab">
+     <attribute name="title">
+      <string>Платежи</string>
+     </attribute>
+     <widget class="QTableView" name="payments_table">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>481</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="payments_button">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>360</y>
+        <width>281</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Узнать платежи клиентов</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="payment_info">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>20</y>
+        <width>321</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Информация о платежах</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="add_row_payment">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>360</y>
+        <width>191</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Добавить платеж</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="remove_row_payment">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>360</y>
+        <width>191</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 10px;
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Удалить платеж</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="update_payments">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>430</y>
+        <width>421</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Редактировать платежи, можно прямо в таблице</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="help_3">
+      <property name="geometry">
+       <rect>
+        <x>610</x>
+        <y>430</y>
+        <width>421</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>После добавления значений в таблицу, нажимайте ENTER</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="paymentid_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>100</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>PaymentID</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="creditid2_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>150</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>CreditID</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="datepayment_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>200</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Дата платежа</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="sumpayment_label">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>250</y>
+        <width>321</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid black; /* Тонкая серая рамка */
+
+font-size: 16px;
+qproperty-alignment: AlignCenter; </string>
+      </property>
+      <property name="text">
+       <string>Сумма платежа</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1236</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>КредитОформи</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>clients_table</tabstop>
+  <tabstop>add_row</tabstop>
+  <tabstop>remove_row</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
