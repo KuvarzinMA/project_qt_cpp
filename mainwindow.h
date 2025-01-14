@@ -14,6 +14,8 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QDate>
+#include <QRegularExpression>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -37,9 +39,6 @@ private slots:
 
     void on_clients_table_clicked(const QModelIndex &index);
 
-    void on_payments_button_clicked();
-
-
     void on_add_row_credit_clicked();
 
     void on_remove_row_credit_clicked();
@@ -51,6 +50,16 @@ private slots:
     void on_credits_table_clicked(const QModelIndex &index);
 
     void on_payments_table_clicked(const QModelIndex &index);
+
+    bool validateClientData(const QString &email);
+
+    bool validateCreditData(const QString &startDate, const QString &endDate);
+
+    void on_table_clicked(QAbstractItemModel *model, const QModelIndex &index, QVector<QLabel *> labels);
+
+    void on_save_clients_clicked();
+
+    void on_save_credits_clicked();
 
 private:
     Ui::MainWindow *ui;
