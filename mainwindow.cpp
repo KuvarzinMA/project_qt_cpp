@@ -64,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
     paymentsmodel->setTable("payments");
     paymentsmodel->setEditStrategy(QSqlTableModel::OnFieldChange);
     paymentsmodel->select();
+    ui->payments_table->setModel(paymentsmodel);
 
     // Установка изображения
     QPixmap pix(":/img/smile.png");
@@ -81,14 +82,53 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-//кнопка для добавления клиентов
+
+// Проверка данных перед добавлением
+bool MainWindow::validateClientData( const QString &email)
+{
+
+    qDebug() << "Checking Email:" << email;
+
+    QRegularExpression emailRegex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+
+    // Проверяем email
+    if (!email.isEmpty() && !emailRegex.match(email).hasMatch()) {
+        qDebug() << "Invalid email format.";
+        return false;
+    }
+
+    return true; // Все данные валидны
+}
+
+// Метод проверки данных кредита
+bool MainWindow::validateCreditData(const QString &startDate, const QString &endDate)
+{
+
+    QDate start = QDate::fromString(startDate, "yyyy-MM-dd");
+    QDate end = QDate::fromString(endDate, "yyyy-MM-dd");
+
+    if (!start.isValid() || !end.isValid() || start > end) {
+        qDebug() << "Invalid credit dates.";
+        return false;
+    }
+
+
+    return true;
+}
+
+
+
+// Добавление строки в таблицу клиентов
 void MainWindow::on_add_row_clicked()
 {
     if (!clientsmodel->insertRow(clientsmodel->rowCount())) {
         qDebug() << "Failed to insert row:" << clientsmodel->lastError().text();
     }
+    qDebug() << "New client row added.";
 }
-//кнопка для удаления клиентов
+
+
+// Удаление строки из таблицы
 void MainWindow::on_remove_row_clicked()
 {
     if (row < 0 || row >= clientsmodel->rowCount()) {
@@ -98,132 +138,145 @@ void MainWindow::on_remove_row_clicked()
 
     if (!clientsmodel->removeRow(row)) {
         qDebug() << "Failed to remove row:" << clientsmodel->lastError().text();
-    }
-
-    if (!clientsmodel->submitAll()) {
+    } else if (!clientsmodel->submitAll()) {
         qDebug() << "Failed to submit changes:" << clientsmodel->lastError().text();
+    } else {
+        qDebug() << "Row removed successfully.";
     }
 }
-//tableview для клиентов
+
+// Обработка кликов по любой таблице
+void MainWindow::on_table_clicked(QAbstractItemModel *model, const QModelIndex &index, QVector<QLabel *> labels)
+{
+    row = index.row();
+    int column = index.column();
+    qDebug() << "Row: " << row << ", Column: " << column;
+
+    if (row < 0 || row >= model->rowCount()) {
+        qDebug() << "Invalid row selected.";
+        return;
+    }
+
+    for (int i = 0; i < labels.size(); ++i) {
+        QString data = model->data(model->index(row, i)).toString();
+        labels[i]->setText(data);
+    }
+}
+
+// Пример использования для клиентов
 void MainWindow::on_clients_table_clicked(const QModelIndex &index)
 {
-    row = index.row();
-    int column = index.column();
-    qDebug() << "Row: " << row << ", Column: " << column;
-    if (row < clientsmodel->rowCount()) {
-        QString fullName = clientsmodel->data(clientsmodel->index(row, 1)).toString();
-        qDebug() << "Имя клиента из модели:" << fullName;
-        ui->fullname_label->setText(fullName);
-        QString birthday = clientsmodel->data(clientsmodel->index(row, 2)).toString();
-        ui->birthday_label->setText(birthday);
-        QString clientid = clientsmodel->data(clientsmodel->index(row, 0)).toString();
-        ui->clientid_label->setText(clientid);
-        QString email = clientsmodel->data(clientsmodel->index(row, 3)).toString();
-        ui->email_label->setText(email);
-    } else {
-        qDebug() << "Неверный номер строки";
-    }
-
+    on_table_clicked(clientsmodel, index, {ui->clientid_label, ui->fullname_label, ui->birthday_label, ui->email_label});
 }
-//tableview для кредитов
+
+// Пример использования для кредитов
 void MainWindow::on_credits_table_clicked(const QModelIndex &index)
 {
-    row = index.row();
-    int column = index.column();
-    qDebug() << "Row: " << row << ", Column: " << column;
-    if (row < creditsmodel->rowCount()) {
-        QString creditid = creditsmodel->data(creditsmodel->index(row, 0)).toString();
-        qDebug() << "Имя клиента из модели:" << creditid;
-        ui->creditid_label->setText(creditid);
-        QString clientid2 = creditsmodel->data(creditsmodel->index(row, 1)).toString();
-        ui->clientid2_label->setText(clientid2);
-        QString sumcredit = creditsmodel->data(creditsmodel->index(row, 2)).toString();
-        ui->sumcredit_label->setText(sumcredit);
-        QString startcredit = creditsmodel->data(creditsmodel->index(row, 3)).toString();
-        ui->startcredit_label->setText(startcredit);
-        QString endcredit = creditsmodel->data(creditsmodel->index(row, 4)).toString();
-        ui->endcredit_label->setText(endcredit);
-        QString statuscredit = creditsmodel->data(creditsmodel->index(row, 5)).toString();
-        ui->status_label->setText(statuscredit);
-    }
+    on_table_clicked(creditsmodel, index, {ui->creditid_label, ui->clientid2_label, ui->sumcredit_label, ui->startcredit_label, ui->endcredit_label, ui->status_label});
 }
 
-//tableview для платежей
+// Пример использования для платежей
 void MainWindow::on_payments_table_clicked(const QModelIndex &index)
 {
-    row = index.row();
-    int column = index.column();
-    qDebug() << "Row: " << row << ", Column: " << column;
-    if (row < paymentsmodel->rowCount()) {
-        QString paymentid = paymentsmodel->data(paymentsmodel->index(row, 0)).toString();
-        qDebug() << "Имя клиента из модели:" << paymentid;
-        ui->paymentid_label->setText(paymentid);
-        QString creditid2 = paymentsmodel->data(paymentsmodel->index(row, 1)).toString();
-        ui->creditid2_label->setText(creditid2);
-        QString datepayment = paymentsmodel->data(paymentsmodel->index(row, 2)).toString();
-        ui->datepayment_label->setText(datepayment);
-        QString sumpayment = paymentsmodel->data(paymentsmodel->index(row, 3)).toString();
-        ui->sumpayment_label->setText(sumpayment);
-    }
-}
-//кнопка для tableview в платежах
-void MainWindow::on_payments_button_clicked()
-{
-    ui->payments_table->setModel(paymentsmodel);
-    qDebug() << "Switched to 'payments' model";
+    on_table_clicked(paymentsmodel, index, {ui->paymentid_label, ui->creditid2_label, ui->datepayment_label, ui->sumpayment_label});
 }
 
-
-//кнопка для добавления кредитов
+// Добавление проверки на вводимые данные в базу данных
 void MainWindow::on_add_row_credit_clicked()
 {
     if (!creditsmodel->insertRow(creditsmodel->rowCount())) {
         qDebug() << "Failed to insert row:" << creditsmodel->lastError().text();
+    } else {
+        qDebug() << "Row added successfully.";
     }
 }
 
-
-//кнопка для удаления кредитов
+// Удаление строки из кредитов
 void MainWindow::on_remove_row_credit_clicked()
 {
-    if (row < 0 ) {
-        qDebug() << "Invalid row selected for deletion";
+    if (row < 0 || row >= creditsmodel->rowCount()) {
+        qDebug() << "Invalid row selected for deletion.";
         return;
     }
 
     if (!creditsmodel->removeRow(row)) {
         qDebug() << "Failed to remove row:" << creditsmodel->lastError().text();
-    }
-
-    if (!creditsmodel->submitAll()) {
+    } else if (!creditsmodel->submitAll()) {
         qDebug() << "Failed to submit changes:" << creditsmodel->lastError().text();
+    } else {
+        qDebug() << "Row removed successfully.";
     }
 }
 
-
-
-//кнопка для добавления платежей
+// Добавление строки в платежи
 void MainWindow::on_add_row_payment_clicked()
 {
     if (!paymentsmodel->insertRow(paymentsmodel->rowCount())) {
         qDebug() << "Failed to insert row:" << paymentsmodel->lastError().text();
+    } else {
+        qDebug() << "Row added successfully.";
     }
 }
 
-
-//кнопка для удаления платежей
+// Удаление строки из платежей
 void MainWindow::on_remove_row_payment_clicked()
 {
-
+    if (row < 0 || row >= paymentsmodel->rowCount()) {
+        qDebug() << "Invalid row selected for deletion.";
+        return;
+    }
 
     if (!paymentsmodel->removeRow(row)) {
         qDebug() << "Failed to remove row:" << paymentsmodel->lastError().text();
-    }
-
-    if (!paymentsmodel->submitAll()) {
+    } else if (!paymentsmodel->submitAll()) {
         qDebug() << "Failed to submit changes:" << paymentsmodel->lastError().text();
+    } else {
+        qDebug() << "Row removed successfully.";
     }
 }
 
 
+void MainWindow::on_save_clients_clicked()
+{
+    for (int row = 0; row < clientsmodel->rowCount(); ++row) {
 
+        QString email = clientsmodel->data(clientsmodel->index(row, 3)).toString();
+
+        if (!validateClientData(email)) {
+            qDebug() << "Validation failed for row" << row << ". Data will not be saved.";
+            ui->label_saved_clients->setText("Не правильный email");
+            return;
+        }
+    }
+
+    if (!clientsmodel->submitAll()) {
+        qDebug() << "Failed to save client data:" << clientsmodel->lastError().text();
+
+    } else {
+        ui->label_saved_clients->setText("Успешно!");
+        qDebug() << "Client data saved successfully.";
+    }
+}
+
+void MainWindow::on_save_credits_clicked()
+{
+    for (int row = 0; row < creditsmodel->rowCount(); ++row) {
+
+        QString startDate = creditsmodel->data(creditsmodel->index(row, 3)).toString();
+        QString endDate = creditsmodel->data(creditsmodel->index(row, 4)).toString();
+
+
+        if (!validateCreditData(startDate, endDate)) {
+            qDebug() << "Validation failed for row" << row << ". Data will not be saved.";
+            ui->label_saved_credits->setText("Не правильно указана дата");
+            return;
+        }
+    }
+
+    if (!creditsmodel->submitAll()) {
+        qDebug() << "Failed to save credit data:" << creditsmodel->lastError().text();
+    } else {
+        qDebug() << "Credit data saved successfully.";
+        ui->label_saved_credits->setText("Успешно!");
+    }
+}
